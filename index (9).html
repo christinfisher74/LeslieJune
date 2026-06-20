@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<title>Leslie's Strength</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  body { overscroll-behavior-y: none; font-family: sans-serif; }
+</style>
+</head>
+<body>
+<div id="root"><div style="padding:40px 20px;text-align:center;color:#999;">Loading…</div></div>
+<script>
+window.addEventListener('error', function(e) {
+  var root = document.getElementById('root');
+  root.innerHTML = '<div style="padding:40px 20px;font-family:sans-serif;color:#900;"><b>Something did not load.</b><br><br>' + e.message + '<br><br>Try opening this file directly in Chrome or Safari, or check your internet connection.</div>';
+});
+</script>
+<script>
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+const { useState } = React;
+const FOREST = "#1E3329";
+const TAUPE = "#C4A882";
+const SAGE = "#7A9E7E";
+const CREAM = "#FAF7F2";
+const CHARCOAL = "#2E2E2E";
+const Icon = ({ path, size = 20, color = "currentColor" }) => /* @__PURE__ */ React.createElement("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: color, strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round" }, path);
+const BatteryIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("rect", { x: "1", y: "6", width: "18", height: "12", rx: "2", ry: "2" }), /* @__PURE__ */ React.createElement("line", { x1: "23", y1: "13", x2: "23", y2: "11" })) }));
+const ActivityIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement("polyline", { points: "22 12 18 12 15 21 9 3 6 12 2 12" }) }));
+const AppleIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("path", { d: "M12 20c-4 0-7-3-7-8 0-3 2-6 4-6 1.2 0 2 .7 3 .7s1.8-.7 3-.7c1.7 0 3.2 1.2 4 2.7-3 1.5-3 6 .5 7.8-1 2-2.8 3.5-4.5 3.5-1 0-1.6-.4-3-1z" }), /* @__PURE__ */ React.createElement("path", { d: "M12 4c0-1.5 1-2.5 2-3" })) }));
+const ScaleIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement(React.Fragment, null, /* @__PURE__ */ React.createElement("path", { d: "M16 16l3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1z" }), /* @__PURE__ */ React.createElement("path", { d: "M2 16l3-8 3 8c-.9.6-1.9 1-3 1s-2.1-.4-3-1z" }), /* @__PURE__ */ React.createElement("path", { d: "M7 21h10" }), /* @__PURE__ */ React.createElement("path", { d: "M12 3v18" }), /* @__PURE__ */ React.createElement("path", { d: "M3 7h18" })) }));
+const ChevronRightIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement("polyline", { points: "9 18 15 12 9 6" }) }));
+const ChevronDownIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement("polyline", { points: "6 9 12 15 18 9" }) }));
+const CheckIcon = (p) => /* @__PURE__ */ React.createElement(Icon, __spreadProps(__spreadValues({}, p), { path: /* @__PURE__ */ React.createElement("polyline", { points: "20 6 9 17 4 12" }) }));
+const SELF_CARE = {
+  plate: {
+    title: "Vibration Plate \u2014 Daily Reset",
+    sub: "Full Body \xB7 8\u201310 min \xB7 Any day, on your own",
+    exercises: [
+      { name: "Standing \u2014 Feet Hip Width", sets: 1, reps: "60 sec", note: "Soft knees, just stand and let it work" },
+      { name: "Bodyweight Squat Hold", sets: 1, reps: "45 sec", note: "Sit back, chest tall" },
+      { name: "Calf Raises", sets: 2, reps: "30 sec", note: "Slow and controlled" },
+      { name: "Standing Hip Circles", sets: 1, reps: "30 sec/dir", note: "Loosen hips before or after pickleball" },
+      { name: "Single Leg Balance", sets: 1, reps: "20 sec/side", note: "Hold onto something if needed" },
+      { name: "Forward Fold Stretch", sets: 1, reps: "60 sec", note: "Let gravity do the work \u2014 knees soft" }
+    ]
+  },
+  elbow: {
+    title: "Golfer's Elbow \u2014 Rehab",
+    sub: "Daily \xB7 5\u20138 min \xB7 Even on rest days",
+    exercises: [
+      { name: "Wrist Flexor Stretch", sets: 3, reps: "30 sec/side", note: "Arm out straight, gently pull fingers back" },
+      { name: "Wrist Extensor Stretch", sets: 3, reps: "30 sec/side", note: "Arm out straight, palm down, pull wrist down" },
+      { name: "Eccentric Wrist Curl", sets: 2, reps: "12 slow reps", note: "Light weight or band \u2014 lower slow, 4 count" },
+      { name: "Towel Twist", sets: 2, reps: "10 each way", note: "Wring a towel like wringing out water" },
+      { name: "Ice After Pickleball", sets: 1, reps: "10\u201315 min", note: "Especially after long sessions" }
+    ]
+  }
+};
+const FUEL_PAIRS = [
+  { base: "Toast or a bagel", add: "Peanut butter or a hard-boiled egg" },
+  { base: "A banana or apple", add: "Almonds or string cheese" },
+  { base: "Crackers", add: "Sliced turkey or hummus" },
+  { base: "Cereal", add: "Greek yogurt on the side or mixed in" },
+  { base: "Granola bar", add: "A piece of cheese or some nuts" },
+  { base: "Rice cakes", add: "Almond butter or cottage cheese" }
+];
+const PREP_LIST = [
+  "Hard-boiled eggs (boil 6 at once)",
+  "String cheese or cheese sticks",
+  "Greek yogurt cups",
+  "Nut butter \u2014 jar or packets",
+  "Pre-washed fruit on the counter",
+  "Rotisserie chicken, portioned",
+  "Nuts in small grab bags"
+];
+const FOOD_LISTS = {
+  protein: {
+    label: "Protein",
+    color: "#7A9E7E",
+    note: "Builds and repairs muscle. Aim for a portion at every meal \u2014 roughly the size of your palm.",
+    foods: [
+      "Chicken, turkey, lean beef",
+      "Eggs",
+      "Greek yogurt (plain, higher protein than regular)",
+      "Cottage cheese",
+      "Fish \u2014 salmon, tuna, shrimp",
+      "Tofu, edamame, tempeh",
+      "Protein powder / shakes",
+      "Milk",
+      "Beans and lentils"
+    ]
+  },
+  fats: {
+    label: "Healthy Fats",
+    color: "#C4A882",
+    note: "Slows digestion, keeps you fuller longer, and helps prevent the blood sugar crash. This is where peanut butter and nuts actually belong.",
+    foods: [
+      "Peanut butter, almond butter, other nut butters",
+      "Nuts \u2014 almonds, walnuts, cashews",
+      "Avocado",
+      "Olive oil",
+      "Seeds \u2014 chia, flax, pumpkin",
+      "Cheese",
+      "Egg yolks",
+      "Full-fat Greek yogurt"
+    ]
+  },
+  fiber: {
+    label: "Fiber",
+    color: "#5C8068",
+    note: "Slows sugar absorption, keeps digestion steady, and helps you feel full. Pair with protein and fat for the full effect.",
+    foods: [
+      "Vegetables \u2014 broccoli, spinach, peppers, carrots",
+      "Berries \u2014 raspberries, blackberries, strawberries",
+      "Apples and pears (with skin)",
+      "Beans and lentils",
+      "Oats",
+      "Whole grain bread or crackers",
+      "Chia seeds and flax seeds",
+      "Avocado"
+    ]
+  }
+};
+const ENERGY_LEVELS = [
+  { val: 1, label: "Wiped Out", color: "#B8704F" },
+  { val: 2, label: "Running Low", color: "#C4A882" },
+  { val: 3, label: "Steady", color: "#7A9E7E" },
+  { val: 4, label: "Strong", color: "#5C8068" },
+  { val: 5, label: "Energized", color: "#1E3329" }
+];
+const DAILY_HABITS = [
+  { key: "protein", label: "Protein at every meal", icon: "\u{1F373}" },
+  { key: "water", label: "Hit your water target", icon: "\u{1F4A7}" },
+  { key: "fiber", label: "Got your fiber in", icon: "\u{1F966}" },
+  { key: "walk", label: "Walk completed", icon: "\u{1F6B6}\u200D\u2640\uFE0F" },
+  { key: "pickleball", label: "Pickleball kept in check", icon: "\u{1F3BE}" }
+];
+function todayKey() {
+  return (/* @__PURE__ */ new Date()).toISOString().split("T")[0];
+}
+function useLocalState(key, initial) {
+  const [state, setState] = useState(initial);
+  return [state, setState];
+}
+function LeslieApp() {
+  const [tab, setTab] = useState("today");
+  const [weighIns, setWeighIns] = useLocalState("weighIns", []);
+  const [weightInput, setWeightInput] = useState("");
+  const [energyLog, setEnergyLog] = useLocalState("energyLog", []);
+  const [dailyPoints, setDailyPoints] = useLocalState("dailyPoints", {});
+  const [streak, setStreak] = useLocalState("streak", 0);
+  const [lastStreakDate, setLastStreakDate] = useLocalState("lastStreakDate", null);
+  const todayStr = (/* @__PURE__ */ new Date()).toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" });
+  const addWeighIn = () => {
+    if (!weightInput) return;
+    const entry = { date: (/* @__PURE__ */ new Date()).toLocaleDateString(), weight: parseFloat(weightInput) };
+    setWeighIns([...weighIns, entry]);
+    setWeightInput("");
+  };
+  const logEnergy = (val) => {
+    setEnergyLog([...energyLog, { date: (/* @__PURE__ */ new Date()).toLocaleDateString(), val }]);
+  };
+  const todayEnergy = energyLog.length > 0 ? energyLog[energyLog.length - 1] : null;
+  const isToday = todayEnergy && todayEnergy.date === (/* @__PURE__ */ new Date()).toLocaleDateString();
+  const today = todayKey();
+  const todayHabits = dailyPoints[today] || {};
+  const pointsEarned = Object.values(todayHabits).filter(Boolean).length;
+  const toggleHabit = (key) => {
+    const wasComplete = pointsEarned === DAILY_HABITS.length;
+    const next = __spreadProps(__spreadValues({}, todayHabits), { [key]: !todayHabits[key] });
+    const updated = __spreadProps(__spreadValues({}, dailyPoints), { [today]: next });
+    setDailyPoints(updated);
+    const nowComplete = Object.values(next).filter(Boolean).length === DAILY_HABITS.length;
+    if (nowComplete && !wasComplete) {
+      if (lastStreakDate) {
+        const yesterday = /* @__PURE__ */ new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yKey = yesterday.toISOString().split("T")[0];
+        if (lastStreakDate === yKey || lastStreakDate === today) {
+          setStreak(streak + (lastStreakDate === today ? 0 : 1));
+        } else {
+          setStreak(1);
+        }
+      } else {
+        setStreak(1);
+      }
+      setLastStreakDate(today);
+    } else if (!nowComplete && wasComplete && lastStreakDate === today) {
+      setStreak(Math.max(0, streak - 1));
+      setLastStreakDate(null);
+    }
+  };
+  return /* @__PURE__ */ React.createElement("div", { style: { minHeight: "100vh", background: CREAM, fontFamily: "'DM Sans', sans-serif", color: CHARCOAL, paddingBottom: "90px" } }, /* @__PURE__ */ React.createElement("div", { style: { background: FOREST, padding: "28px 20px 24px", borderBottomLeftRadius: "24px", borderBottomRightRadius: "24px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontFamily: "'Cormorant Garamond', serif", fontSize: "28px", color: CREAM, fontWeight: 600, letterSpacing: "0.3px" } }, "Leslie's Strength"), /* @__PURE__ */ React.createElement("div", { style: { color: TAUPE, fontSize: "13px", marginTop: "2px", letterSpacing: "0.5px" } }, todayStr)), /* @__PURE__ */ React.createElement("div", { style: { padding: "20px 16px", maxWidth: "480px", margin: "0 auto" } }, tab === "today" && /* @__PURE__ */ React.createElement(
+    TodayTab,
+    {
+      isToday,
+      todayEnergy,
+      logEnergy,
+      weighIns,
+      setTab,
+      todayHabits,
+      toggleHabit,
+      pointsEarned,
+      streak
+    }
+  ), tab === "selfcare" && /* @__PURE__ */ React.createElement(SelfCareTab, null), tab === "fueling" && /* @__PURE__ */ React.createElement(FuelingTab, null), tab === "weight" && /* @__PURE__ */ React.createElement(
+    WeightTab,
+    {
+      weighIns,
+      weightInput,
+      setWeightInput,
+      addWeighIn
+    }
+  )), /* @__PURE__ */ React.createElement("div", { style: {
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    background: "#FFFFFF",
+    borderTop: `1px solid ${TAUPE}33`,
+    display: "flex",
+    justifyContent: "space-around",
+    padding: "10px 0 14px",
+    boxShadow: "0 -2px 12px rgba(30,51,41,0.06)"
+  } }, /* @__PURE__ */ React.createElement(NavButton, { icon: /* @__PURE__ */ React.createElement(BatteryIcon, { size: 20 }), label: "Today", active: tab === "today", onClick: () => setTab("today") }), /* @__PURE__ */ React.createElement(NavButton, { icon: /* @__PURE__ */ React.createElement(ActivityIcon, { size: 20 }), label: "Self-Care", active: tab === "selfcare", onClick: () => setTab("selfcare") }), /* @__PURE__ */ React.createElement(NavButton, { icon: /* @__PURE__ */ React.createElement(AppleIcon, { size: 20 }), label: "Fueling", active: tab === "fueling", onClick: () => setTab("fueling") }), /* @__PURE__ */ React.createElement(NavButton, { icon: /* @__PURE__ */ React.createElement(ScaleIcon, { size: 20 }), label: "Weigh-In", active: tab === "weight", onClick: () => setTab("weight") })));
+}
+function NavButton({ icon, label, active, onClick }) {
+  return /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick,
+      style: {
+        background: "none",
+        border: "none",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "3px",
+        color: active ? FOREST : "#A8A39C",
+        cursor: "pointer",
+        padding: "4px 12px"
+      }
+    },
+    icon,
+    /* @__PURE__ */ React.createElement("span", { style: { fontSize: "10.5px", fontWeight: active ? 700 : 500, letterSpacing: "0.2px" } }, label)
+  );
+}
+function TodayTab({ isToday, todayEnergy, logEnergy, weighIns, setTab, todayHabits, toggleHabit, pointsEarned, streak }) {
+  const lastWeight = weighIns.length > 0 ? weighIns[weighIns.length - 1] : null;
+  const daysSinceWeighIn = lastWeight ? Math.floor((/* @__PURE__ */ new Date() - new Date(lastWeight.date)) / (1e3 * 60 * 60 * 24)) : null;
+  const allComplete = pointsEarned === DAILY_HABITS.length;
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Card, { style: { background: allComplete ? SAGE : "#FFFFFF", border: allComplete ? "none" : `1px solid ${TAUPE}30` } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement(CardTitle, { dark: allComplete }, "Today's Points"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "6px" } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "22px", fontWeight: 800, color: allComplete ? CREAM : FOREST } }, pointsEarned), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13px", color: allComplete ? CREAM : "#A8A39C", fontWeight: 600 } }, "/ ", DAILY_HABITS.length))), streak > 0 && /* @__PURE__ */ React.createElement("div", { style: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "5px",
+    marginTop: "8px",
+    background: allComplete ? "rgba(255,255,255,0.2)" : "#F2EEE7",
+    borderRadius: "20px",
+    padding: "4px 12px"
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13px" } }, "\u{1F525}"), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "11.5px", fontWeight: 700, color: allComplete ? CREAM : FOREST } }, streak, " day", streak === 1 ? "" : "s", " all 5")), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "14px", display: "flex", flexDirection: "column", gap: "4px" } }, DAILY_HABITS.map((h) => /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      key: h.key,
+      onClick: () => toggleHabit(h.key),
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        padding: "9px 10px",
+        borderRadius: "10px",
+        cursor: "pointer",
+        background: todayHabits[h.key] ? allComplete ? "rgba(255,255,255,0.15)" : "#F0F5F1" : "transparent"
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: {
+      width: "20px",
+      height: "20px",
+      borderRadius: "50%",
+      flexShrink: 0,
+      border: `2px solid ${todayHabits[h.key] ? allComplete ? CREAM : SAGE : allComplete ? "rgba(255,255,255,0.5)" : TAUPE}`,
+      background: todayHabits[h.key] ? allComplete ? CREAM : SAGE : "transparent",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, todayHabits[h.key] && /* @__PURE__ */ React.createElement(CheckIcon, { size: 12, color: allComplete ? SAGE : CREAM })),
+    /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13px" } }, h.icon),
+    /* @__PURE__ */ React.createElement("span", { style: {
+      fontSize: "13px",
+      fontWeight: 600,
+      flex: 1,
+      color: allComplete ? CREAM : CHARCOAL,
+      textDecoration: todayHabits[h.key] ? "line-through" : "none",
+      opacity: todayHabits[h.key] ? 0.85 : 1
+    } }, h.label)
+  ))), allComplete && /* @__PURE__ */ React.createElement("div", { style: { marginTop: "12px", fontSize: "12px", color: CREAM, fontStyle: "italic", textAlign: "center" } }, "All 5 today. That's the whole game. \u2713")), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "14px" } }), /* @__PURE__ */ React.createElement(Card, null, /* @__PURE__ */ React.createElement(CardTitle, null, "How's your energy today?"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", marginTop: "14px", gap: "6px" } }, ENERGY_LEVELS.map((lvl) => /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      key: lvl.val,
+      onClick: () => logEnergy(lvl.val),
+      style: {
+        flex: 1,
+        background: isToday && todayEnergy.val === lvl.val ? lvl.color : "#F2EEE7",
+        border: "none",
+        borderRadius: "10px",
+        padding: "10px 4px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "4px",
+        cursor: "pointer",
+        transition: "all 0.15s"
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: {
+      width: "8px",
+      height: "8px",
+      borderRadius: "50%",
+      background: isToday && todayEnergy.val === lvl.val ? CREAM : lvl.color
+    } }),
+    /* @__PURE__ */ React.createElement("span", { style: {
+      fontSize: "9px",
+      textAlign: "center",
+      fontWeight: 600,
+      color: isToday && todayEnergy.val === lvl.val ? CREAM : CHARCOAL
+    } }, lvl.label)
+  )))), /* @__PURE__ */ React.createElement(Card, { style: { background: FOREST, marginTop: "14px" } }, /* @__PURE__ */ React.createElement("div", { style: { color: TAUPE, fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "8px" } }, "The One Rule"), /* @__PURE__ */ React.createElement("div", { style: { color: CREAM, fontSize: "16px", fontFamily: "'Cormorant Garamond', serif", lineHeight: 1.4 } }, "Every time you eat \u2014 pair a carb with a protein and a fat. That's it.")), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } }, /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(CardTitle, { small: true }, "Last weigh-in"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "14px", color: "#6B6660", marginTop: "2px" } }, lastWeight ? `${daysSinceWeighIn} day${daysSinceWeighIn === 1 ? "" : "s"} ago` : "No entries yet")), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setTab("weight"),
+      style: {
+        background: SAGE,
+        color: CREAM,
+        border: "none",
+        borderRadius: "20px",
+        padding: "8px 16px",
+        fontSize: "12px",
+        fontWeight: 700,
+        cursor: "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "4px"
+      }
+    },
+    "Log ",
+    /* @__PURE__ */ React.createElement(ChevronRightIcon, { size: 14 })
+  )), daysSinceWeighIn !== null && daysSinceWeighIn < 7 && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11px", color: TAUPE, marginTop: "8px", fontStyle: "italic" } }, "Once a week is the move \u2014 same day, same time. Let the rest go quiet.")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", marginTop: "14px" } }, /* @__PURE__ */ React.createElement(QuickTile, { icon: /* @__PURE__ */ React.createElement(ActivityIcon, { size: 18 }), label: "Vibration Plate & Elbow", onClick: () => setTab("selfcare") }), /* @__PURE__ */ React.createElement(QuickTile, { icon: /* @__PURE__ */ React.createElement(AppleIcon, { size: 18 }), label: "Fueling Guide", onClick: () => setTab("fueling") })));
+}
+function QuickTile({ icon, label, onClick }) {
+  return /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick,
+      style: {
+        flex: 1,
+        background: "#FFFFFF",
+        border: `1px solid ${TAUPE}40`,
+        borderRadius: "14px",
+        padding: "16px 12px",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "8px",
+        cursor: "pointer",
+        color: FOREST
+      }
+    },
+    icon,
+    /* @__PURE__ */ React.createElement("span", { style: { fontSize: "11.5px", fontWeight: 600, textAlign: "center" } }, label)
+  );
+}
+function SelfCareTab() {
+  const [activeRoutine, setActiveRoutine] = useState("plate");
+  const routine = SELF_CARE[activeRoutine];
+  const [checked, setChecked] = useState({});
+  const toggleEx = (idx) => {
+    setChecked((prev) => __spreadProps(__spreadValues({}, prev), { [idx]: !prev[idx] }));
+  };
+  const completedCount = Object.values(checked).filter(Boolean).length;
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "8px", marginBottom: "16px" } }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => {
+        setActiveRoutine("plate");
+        setChecked({});
+      },
+      style: {
+        flex: 1,
+        padding: "10px",
+        borderRadius: "10px",
+        background: activeRoutine === "plate" ? FOREST : "#FFFFFF",
+        color: activeRoutine === "plate" ? CREAM : CHARCOAL,
+        fontWeight: 700,
+        fontSize: "12.5px",
+        cursor: "pointer",
+        border: activeRoutine === "plate" ? "none" : `1px solid ${TAUPE}40`
+      }
+    },
+    "Vibration Plate"
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => {
+        setActiveRoutine("elbow");
+        setChecked({});
+      },
+      style: {
+        flex: 1,
+        padding: "10px",
+        borderRadius: "10px",
+        background: activeRoutine === "elbow" ? FOREST : "#FFFFFF",
+        color: activeRoutine === "elbow" ? CREAM : CHARCOAL,
+        fontWeight: 700,
+        fontSize: "12.5px",
+        cursor: "pointer",
+        border: activeRoutine === "elbow" ? "none" : `1px solid ${TAUPE}40`
+      }
+    },
+    "Elbow Rehab"
+  )), /* @__PURE__ */ React.createElement(Card, null, /* @__PURE__ */ React.createElement(CardTitle, null, routine.title), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12px", color: "#6B6660", marginTop: "2px", marginBottom: "14px" } }, routine.sub, " \xB7 ", completedCount, "/", routine.exercises.length, " done"), routine.exercises.map((ex, idx) => /* @__PURE__ */ React.createElement(
+    "div",
+    {
+      key: idx,
+      onClick: () => toggleEx(idx),
+      style: {
+        display: "flex",
+        alignItems: "flex-start",
+        gap: "12px",
+        padding: "12px 0",
+        borderBottom: idx < routine.exercises.length - 1 ? `1px solid ${TAUPE}25` : "none",
+        cursor: "pointer"
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: {
+      width: "22px",
+      height: "22px",
+      borderRadius: "50%",
+      flexShrink: 0,
+      marginTop: "1px",
+      border: `2px solid ${checked[idx] ? SAGE : TAUPE}`,
+      background: checked[idx] ? SAGE : "transparent",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center"
+    } }, checked[idx] && /* @__PURE__ */ React.createElement(CheckIcon, { size: 13, color: CREAM })),
+    /* @__PURE__ */ React.createElement("div", { style: { flex: 1 } }, /* @__PURE__ */ React.createElement("div", { style: {
+      fontSize: "13.5px",
+      fontWeight: 600,
+      textDecoration: checked[idx] ? "line-through" : "none",
+      color: checked[idx] ? "#A8A39C" : CHARCOAL
+    } }, ex.name), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11.5px", color: "#8A857E", marginTop: "1px" } }, ex.sets > 1 ? `${ex.sets} sets \xD7 ` : "", ex.reps), ex.note && /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11px", color: SAGE, marginTop: "3px", fontStyle: "italic" } }, ex.note))
+  ))), activeRoutine === "elbow" && /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px", background: "#F2EEE7" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12px", color: CHARCOAL, lineHeight: 1.5 } }, /* @__PURE__ */ React.createElement("span", { style: { fontWeight: 700, color: FOREST } }, "Flag it: "), "if pain increases or doesn't improve with consistency, tell Christin \u2014 this may need a closer look.")));
+}
+function FuelingTab() {
+  const [openList, setOpenList] = useState(null);
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Card, { style: { background: FOREST } }, /* @__PURE__ */ React.createElement("div", { style: { color: TAUPE, fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" } }, "Why You Crash"), /* @__PURE__ */ React.createElement("div", { style: { color: CREAM, fontSize: "13px", lineHeight: 1.6 } }, "Carbs alone spike blood sugar fast \u2014 then it drops hard. That's the wiped-out feeling, especially after pickleball. Pair every carb with protein and fat, and energy comes in steady instead.")), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, null, "What Counts As What"), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11.5px", color: "#8A857E", marginTop: "4px", marginBottom: "12px" } }, "Peanut butter feels like protein but it's mostly fat \u2014 both matter, just know which is which."), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "8px" } }, Object.entries(FOOD_LISTS).map(([key, group]) => /* @__PURE__ */ React.createElement("div", { key }, /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: () => setOpenList(openList === key ? null : key),
+      style: {
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        background: "#F2EEE7",
+        border: "none",
+        borderRadius: "10px",
+        padding: "12px 14px",
+        cursor: "pointer"
+      }
+    },
+    /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "8px", height: "8px", borderRadius: "50%", background: group.color } }), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13.5px", fontWeight: 700, color: FOREST } }, group.label)),
+    openList === key ? /* @__PURE__ */ React.createElement(ChevronDownIcon, { size: 16, color: TAUPE }) : /* @__PURE__ */ React.createElement(ChevronRightIcon, { size: 16, color: TAUPE })
+  ), openList === key && /* @__PURE__ */ React.createElement("div", { style: { padding: "12px 14px 4px" } }, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11.5px", color: "#6B6660", lineHeight: 1.5, marginBottom: "10px", fontStyle: "italic" } }, group.note), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexDirection: "column", gap: "6px" } }, group.foods.map((f, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: "8px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "4px", height: "4px", borderRadius: "50%", background: group.color, flexShrink: 0 } }), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "12.5px", color: CHARCOAL } }, f))))))))), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, null, "Easy Pairings"), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", display: "flex", flexDirection: "column", gap: "10px" } }, FUEL_PAIRS.map((p, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, fontSize: "12.5px", color: "#6B6660" } }, p.base), /* @__PURE__ */ React.createElement(ChevronRightIcon, { size: 14, color: TAUPE }), /* @__PURE__ */ React.createElement("div", { style: { flex: 1.3, fontSize: "12.5px", fontWeight: 600, color: FOREST } }, p.add))))), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, null, "Around Pickleball"), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", display: "flex", flexDirection: "column", gap: "12px" } }, /* @__PURE__ */ React.createElement(FuelMoment, { when: "Before", text: "Real combo meal 30\u201360 min before. Eggs + toast, yogurt + granola. Not just coffee." }), /* @__PURE__ */ React.createElement(FuelMoment, { when: "During (90+ min)", text: "Bring something \u2014 banana with nut butter, a granola bar, nuts and dried fruit." }), /* @__PURE__ */ React.createElement(FuelMoment, { when: "Right After", text: "Protein within 30\u201360 min. This is when the crash usually hits. Shake, yogurt, cottage cheese." }))), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, null, "Keep This Stocked"), /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px", display: "flex", flexDirection: "column", gap: "8px" } }, PREP_LIST.map((item, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: { display: "flex", alignItems: "center", gap: "10px" } }, /* @__PURE__ */ React.createElement("div", { style: { width: "5px", height: "5px", borderRadius: "50%", background: SAGE, flexShrink: 0 } }), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12.5px", color: CHARCOAL } }, item))))));
+}
+function FuelMoment({ when, text }) {
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement("div", { style: { fontSize: "11px", fontWeight: 700, color: SAGE, textTransform: "uppercase", letterSpacing: "0.5px" } }, when), /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12.5px", color: "#6B6660", marginTop: "2px", lineHeight: 1.5 } }, text));
+}
+function WeightTab({ weighIns, weightInput, setWeightInput, addWeighIn }) {
+  const recent = [...weighIns].reverse().slice(0, 8);
+  return /* @__PURE__ */ React.createElement("div", null, /* @__PURE__ */ React.createElement(Card, { style: { background: FOREST } }, /* @__PURE__ */ React.createElement("div", { style: { color: TAUPE, fontSize: "10px", fontWeight: 700, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" } }, "Weekly, Not Daily"), /* @__PURE__ */ React.createElement("div", { style: { color: CREAM, fontSize: "13px", lineHeight: 1.6 } }, "One number, once a week, same day and time. Daily fluctuation is just noise \u2014 water, sodium, hormones. It's not telling you anything true.")), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, null, "Log This Week"), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: "10px", marginTop: "12px" } }, /* @__PURE__ */ React.createElement(
+    "input",
+    {
+      type: "number",
+      value: weightInput,
+      onChange: (e) => setWeightInput(e.target.value),
+      placeholder: "Weight",
+      style: {
+        flex: 1,
+        padding: "12px 14px",
+        borderRadius: "10px",
+        border: `1px solid ${TAUPE}50`,
+        fontSize: "15px",
+        fontFamily: "'DM Sans', sans-serif",
+        outline: "none",
+        color: CHARCOAL
+      }
+    }
+  ), /* @__PURE__ */ React.createElement(
+    "button",
+    {
+      onClick: addWeighIn,
+      style: {
+        background: FOREST,
+        color: CREAM,
+        border: "none",
+        borderRadius: "10px",
+        padding: "0 22px",
+        fontWeight: 700,
+        fontSize: "13px",
+        cursor: "pointer"
+      }
+    },
+    "Save"
+  ))), /* @__PURE__ */ React.createElement(Card, { style: { marginTop: "14px" } }, /* @__PURE__ */ React.createElement(CardTitle, { small: true }, "History"), recent.length === 0 ? /* @__PURE__ */ React.createElement("div", { style: { fontSize: "12.5px", color: "#A8A39C", marginTop: "10px", fontStyle: "italic" } }, "No entries yet. Log your first weigh-in above.") : /* @__PURE__ */ React.createElement("div", { style: { marginTop: "10px" } }, recent.map((w, i) => /* @__PURE__ */ React.createElement("div", { key: i, style: {
+    display: "flex",
+    justifyContent: "space-between",
+    padding: "10px 0",
+    borderBottom: i < recent.length - 1 ? `1px solid ${TAUPE}20` : "none"
+  } }, /* @__PURE__ */ React.createElement("span", { style: { fontSize: "12.5px", color: "#6B6660" } }, w.date), /* @__PURE__ */ React.createElement("span", { style: { fontSize: "13px", fontWeight: 700, color: FOREST } }, w.weight, " lbs"))))));
+}
+function Card({ children, style = {} }) {
+  return /* @__PURE__ */ React.createElement("div", { style: __spreadValues({
+    background: style.background || "#FFFFFF",
+    borderRadius: "16px",
+    padding: "18px",
+    border: style.background ? "none" : `1px solid ${TAUPE}30`
+  }, style) }, children);
+}
+function CardTitle({ children, small, dark }) {
+  return /* @__PURE__ */ React.createElement("div", { style: {
+    fontFamily: "'Cormorant Garamond', serif",
+    fontSize: small ? "15px" : "18px",
+    fontWeight: 600,
+    color: dark ? CREAM : FOREST
+  } }, children);
+}
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(/* @__PURE__ */ React.createElement(LeslieApp, null));
+</script>
+</body>
+</html>
